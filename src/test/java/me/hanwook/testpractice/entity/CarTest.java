@@ -1,0 +1,49 @@
+package me.hanwook.testpractice.entity;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+public class CarTest {
+
+    @Test
+    public void 차량_옵션_총액_조회() throws Exception {
+        // given
+        Model avante = Model.builder()
+                .name("아반떼")
+                .price(21000000)
+                .build();
+
+        Car car = Car.builder()
+                .color(CarColor.RED)
+                .model(avante)
+                .build();
+
+        addCarOption(car, makeOption("파노라마선루프", 100000));
+        addCarOption(car, makeOption("내비게이션", 780000));
+
+        // when
+        int optionPrice = car.getOptionPrice();
+
+        // then
+        assertThat(optionPrice).isEqualTo(880000);
+    }
+
+    private Option makeOption(String name, int price) {
+        return Option.builder()
+                .name(name)
+                .price(price)
+                .build();
+    }
+
+    private void addCarOption(Car car, Option sunroof) {
+        CarOption carOption = CarOption.builder()
+                .car(car)
+                .option(sunroof)
+                .build();
+
+        car.getOptions().add(carOption);
+    }
+}

@@ -1,5 +1,6 @@
 package me.hanwook.testpractice.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +27,10 @@ public class CarOption {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "option_id", foreignKey = @ForeignKey(name = "fk_car_option_02"))
     private Option option;
+
+    @Builder
+    public CarOption(Car car, Option option) {
+        this.car = car;
+        this.option = option;
+    }
 }

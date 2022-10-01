@@ -44,4 +44,22 @@ public class Car {
         this.model = model;
         this.color = color;
     }
+
+    /**
+     * 차량의 총 가격을 조회합니다.
+     * @return
+     */
+    public int getPrice() {
+        return 0;
+    }
+
+    /**
+     * 옵션의 가격을 조회합니다.
+     * @return
+     */
+    public int getOptionPrice() {
+        return options.stream()
+                .mapToInt(option -> option.getOption().getPrice())
+                .sum();
+    }
 }
