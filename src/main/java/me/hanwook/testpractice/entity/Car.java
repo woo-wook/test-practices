@@ -50,7 +50,7 @@ public class Car {
      * @return
      */
     public int getPrice() {
-        return 0;
+        return model.getPrice() + getOptionPrice();
     }
 
     /**
