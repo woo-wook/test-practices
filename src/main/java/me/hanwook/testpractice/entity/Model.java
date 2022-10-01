@@ -1,5 +1,6 @@
 package me.hanwook.testpractice.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,11 @@ public class Model {
 
     @OneToMany(cascade = ALL, mappedBy = "model", orphanRemoval = true)
     private List<Car> cars = new ArrayList<>();
+
+    @Builder
+    public Model(Manufacturer manufacturer, String name, int price) {
+        this.manufacturer = manufacturer;
+        this.name = name;
+        this.price = price;
+    }
 }

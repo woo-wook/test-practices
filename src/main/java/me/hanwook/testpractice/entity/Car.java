@@ -1,5 +1,6 @@
 package me.hanwook.testpractice.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,4 +38,10 @@ public class Car {
 
     @OneToMany(cascade = ALL, mappedBy = "car", orphanRemoval = true)
     private List<CarOption> options = new ArrayList<>();
+
+    @Builder
+    public Car(Model model, CarColor color) {
+        this.model = model;
+        this.color = color;
+    }
 }
