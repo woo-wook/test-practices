@@ -42,4 +42,12 @@ public class Model {
         this.name = name;
         this.price = price;
     }
+
+    /**
+     * 차량을 총 대수를 조회합니다.
+     * @return
+     */
+    public int getTotalCarCount() {
+        return cars.size();
+    }
 }
