@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -27,9 +31,28 @@ public class Option {
 
     private int price;
 
+    @OneToMany(cascade = ALL, mappedBy = "option", orphanRemoval = true)
+    private List<CarOption> cars = new ArrayList<>();
+
     @Builder
     public Option(String name, int price) {
         this.name = name;
         this.price = price;
+    }
+
+    /**
+     * 해당 옵션을 사용하는 차의 대수를 조회합니다.
+     * @return
+     */
+    public int getTotalCarCount() {
+        return cars.size();
+    }
+
+    /**
+     * 해당 옵션의 전체 판매 금액을 조회합니다.
+     * @return
+     */
+    public int getTotalPrice() {
+        return 0;
     }
 }
