@@ -54,6 +54,29 @@ public class CarTest {
         assertThat(price).isEqualTo(6720000);
     }
 
+    @Test
+    public void 차량_옵션_총_수_조회() throws Exception {
+        // given
+        Model grandeur = Model.builder()
+                .name("그랜저")
+                .price(40000000)
+                .build();
+
+        Car car = Car.builder()
+                .color(CarColor.BLACK)
+                .model(grandeur)
+                .build();
+
+        addCarOption(car, makeOption("통풍시트", 2100000));
+        addCarOption(car, makeOption("Head-up display", 1200000));
+
+        // when
+        int count = car.getOptionCount();
+
+        // then
+        assertThat(count).isEqualTo(2);
+    }
+    
     private Option makeOption(String name, int price) {
         return Option.builder()
                 .name(name)

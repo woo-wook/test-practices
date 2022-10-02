@@ -62,4 +62,12 @@ public class Car {
                 .mapToInt(option -> option.getOption().getPrice())
                 .sum();
     }
+
+    /**
+     * 옵션의 총 갯수를 조회합니다.
+     * @return
+     */
+    public int getOptionCount() {
+        return options.size();
+    }
 }
