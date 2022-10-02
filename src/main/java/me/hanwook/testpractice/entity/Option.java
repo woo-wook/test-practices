@@ -53,6 +53,6 @@ public class Option {
      * @return
      */
     public int getTotalPrice() {
-        return 0;
+        return price * getTotalCarCount();
     }
 }
