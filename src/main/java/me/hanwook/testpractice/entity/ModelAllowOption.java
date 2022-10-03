@@ -1,6 +1,7 @@
 package me.hanwook.testpractice.entity;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,10 @@ public class ModelAllowOption {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "option_id", foreignKey = @ForeignKey(name = "fk_model_allow_option_02"))
     private Option option;
+
+    @Builder
+    public ModelAllowOption(Model model, Option option) {
+        this.model = model;
+        this.option = option;
+    }
 }

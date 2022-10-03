@@ -36,6 +36,9 @@ public class Model {
     @OneToMany(cascade = ALL, mappedBy = "model", orphanRemoval = true)
     private List<Car> cars = new ArrayList<>();
 
+    @OneToMany(cascade = ALL, mappedBy = "model", orphanRemoval = true)
+    private List<ModelAllowOption> allowOptions = new ArrayList<>();
+
     @Builder
     public Model(Manufacturer manufacturer, String name, int price) {
         this.manufacturer = manufacturer;
@@ -49,5 +52,15 @@ public class Model {
      */
     public int getTotalCarCount() {
         return cars.size();
+    }
+
+    /**
+     * 옵션의 허용 여부를 조회합니다.
+     * @param option
+     * @return
+     */
+    public boolean allowsOption(Option option) {
+        return allowOptions.stream()
+                .anyMatch(x -> x.getOption().equals(option));
     }
 }
