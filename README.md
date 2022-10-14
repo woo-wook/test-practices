@@ -22,3 +22,7 @@
 
 > Repository는 보통 내부에 로직이 거의 없고 대부분을 EntityManager에 의존하기 때문에 테스트 시 통합테스트를 하는 경우가 많다.
 
+**Note**. Service Layer를 테스트 할 때 필연적으로 Repository에 의존적이다. 통합 테스트를 해야할까?
+
+> Repository에서의 결과를 모의 객체를 통해 미리 정해두고 Service Layer Logic을 테스트 하면 된다.  
+> cf. [Mockito](https://site.mockito.org/)
