@@ -3,13 +3,11 @@ package me.hanwook.testpractice.repository;
 import me.hanwook.testpractice.entity.Car;
 import me.hanwook.testpractice.entity.Manufacturer;
 import me.hanwook.testpractice.entity.Model;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static me.hanwook.testpractice.entity.CarColor.*;
