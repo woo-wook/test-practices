@@ -115,4 +115,14 @@ class CarServiceTest {
         assertThat(results.stream().anyMatch(car -> car.getColor() == CarColor.BLACK)).isTrue();
     }
 
+    @Test
+    void 차량_모델_검색_모델없음_예외() {
+        // given
+        final Long modelId = 1L;
+
+        // when & then
+        assertThatThrownBy(() -> carService.findByModel(modelId))
+                .isInstanceOf(ModelNotFoundException.class);
+    }
+
 }
