@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,6 +73,46 @@ class CarServiceTest {
         // when & then
         assertThatThrownBy(() -> carService.create(modelId, color))
                 .isInstanceOf(ModelNotFoundException.class);
+    }
+
+    @Test
+    void 차량_모델_검색() {
+        // given
+        final Long modelId = 1L;
+
+        Model model = Model.builder()
+                .manufacturer(
+                        Manufacturer.builder()
+                                .name("현대")
+                                .build()
+                )
+                .name("SONATA")
+                .price(100000000)
+                .build();
+
+        when(modelRepository.findById(modelId))
+                .thenReturn(Optional.of(model));
+
+        when(carRepository.findByModel(any(Model.class)))
+                .thenReturn(List.of(
+                        Car.builder()
+                                .color(CarColor.BLACK)
+                                .model(model)
+                                .build(),
+                        Car.builder()
+                                .color(CarColor.CYAN)
+                                .model(model)
+                                .build()
+                ));
+
+        // when
+        List<Car> results = carService.findByModel(modelId);
+
+        // then
+        assertThat(results).hasSize(2);
+        assertThat(results.stream().allMatch(car -> car.getModel() == model)).isTrue();
+        assertThat(results.stream().anyMatch(car -> car.getColor() == CarColor.CYAN)).isTrue();
+        assertThat(results.stream().anyMatch(car -> car.getColor() == CarColor.BLACK)).isTrue();
     }
 
 }

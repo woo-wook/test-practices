@@ -10,6 +10,8 @@ import me.hanwook.testpractice.repository.ModelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 차량 서비스
  */
@@ -37,5 +39,18 @@ public class CarService {
                         .color(color)
                         .build()
         );
+    }
+
+    /**
+     * 모델로 차량 검색
+     * @param modelId 모델아이디
+     * @return 해당 모델의 전체 차량
+     */
+    @Transactional
+    public List<Car> findByModel(Long modelId) {
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(ModelNotFoundException::new);
+
+        return carRepository.findByModel(model);
     }
 }
