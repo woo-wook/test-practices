@@ -2,6 +2,7 @@ package me.hanwook.testpractice.service;
 
 import me.hanwook.testpractice.entity.Manufacturer;
 import me.hanwook.testpractice.exception.ManufacturerNotFoundException;
+import me.hanwook.testpractice.exception.ModelDuplicateException;
 import me.hanwook.testpractice.exception.UnusablePriceException;
 import me.hanwook.testpractice.repository.ManufacturerRepository;
 import me.hanwook.testpractice.repository.ModelRepository;
@@ -16,12 +17,18 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ModelServiceTest {
     @Mock
     ManufacturerRepository manufacturerRepository;
+
+    @Mock
+    ModelRepository modelRepository;
+
     @InjectMocks
     ModelService modelService;
 
@@ -58,6 +65,30 @@ class ModelServiceTest {
 
         assertThatThrownBy(() -> modelService.create(manufacturerId, name, 1000000001))
                 .isInstanceOf(UnusablePriceException.class);
+    }
+    
+    @Test
+    void 모델_생성_중복_테스트() {
+        // given
+        Long manufacturerId = 1L;
+        String name = "SONATA";
+        int price = 200000000;
+
+        when(manufacturerRepository.findById(manufacturerId))
+                .thenReturn(
+                        Optional.of(
+                                Manufacturer.builder()
+                                        .name("HYUNDAI")
+                                        .build()
+                        )
+                );
+
+        when(modelRepository.existsByManufacturerAndName(any(Manufacturer.class), eq(name)))
+                .thenReturn(true);
+        
+        // when & then
+        assertThatThrownBy(() -> modelService.create(manufacturerId, name, price))
+                .isInstanceOf(ModelDuplicateException.class);
     }
 
 }
