@@ -84,7 +84,7 @@ public class ModelRepositoryTest {
         );
 
         // when
-        boolean result = modelRepository.existsByName(name);
+        boolean result = modelRepository.existsByManufacturerAndName(hyundai, name);
 
         // then
         assertThat(result).isTrue();
@@ -95,8 +95,15 @@ public class ModelRepositoryTest {
         // given
         final String name = "SONATA";
 
+        Manufacturer hyundai = Manufacturer.builder()
+                .name("현대")
+                .build();
+
+        entityManager.persist(hyundai);
+
+
         // when
-        boolean result = modelRepository.existsByName(name);
+        boolean result = modelRepository.existsByManufacturerAndName(hyundai, name);
 
         // then
         assertThat(result).isFalse();
