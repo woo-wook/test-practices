@@ -46,7 +46,7 @@ public class CarService {
      * @param modelId 모델아이디
      * @return 해당 모델의 전체 차량
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Car> findByModel(Long modelId) {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(ModelNotFoundException::new);
