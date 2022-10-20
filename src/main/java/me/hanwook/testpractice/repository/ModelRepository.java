@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ModelRepository extends JpaRepository<Model, Long> {
     List<Model> findByManufacturer(Manufacturer manufacturer);
+
+    boolean existsByName(String name);
 }

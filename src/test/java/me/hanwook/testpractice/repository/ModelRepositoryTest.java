@@ -64,4 +64,41 @@ public class ModelRepositoryTest {
         // then
         assertThat(hyundaiModels.size()).isEqualTo(2);
     }
+
+    @Test
+    void 모델명_일치_검색() {
+        // given
+        final String name = "SONATA";
+
+        Manufacturer hyundai = Manufacturer.builder()
+                .name("현대")
+                .build();
+
+        entityManager.persist(hyundai);
+
+        modelRepository.save(
+                Model.builder()
+                        .manufacturer(hyundai)
+                        .name(name)
+                        .build()
+        );
+
+        // when
+        boolean result = modelRepository.existsByName(name);
+
+        // then
+        assertThat(result).isTrue();
+    }
+    
+    @Test
+    void 모델명_불일치_검색(){
+        // given
+        final String name = "SONATA";
+
+        // when
+        boolean result = modelRepository.existsByName(name);
+
+        // then
+        assertThat(result).isFalse();
+    }
 }
