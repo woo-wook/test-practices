@@ -26,3 +26,9 @@
 
 > Repository에서의 결과를 모의 객체를 통해 미리 정해두고 Service Layer Logic을 테스트 하면 된다.  
 > cf. [Mockito](https://site.mockito.org/)
+
+**Note**. Controller는 무엇을 테스트 해야할까?
+
+> 컨트롤러는 HTTP 요청을 받고, 응답 하는 역할을 한다. 이를 할 때 요청을 파싱하고, 데이터를 변수에 담아준다. 하지만 유닛 테스트에서는 http layer를 포함하지 않는다. 
+> 따라서 컨트롤러 통합 테스트를 작성해야 한다. 이 때 실제로 컨트롤러에서 테스트 해야 할 범위는 URL로 잘 진입하는가, 데이터가 정상적으로 전달되었는가, validation 체크가 정상적으로 되었는가,
+> 유효한 응답이 왔는가에 대해 테스트를 작성해야 한다. (interceptor, filter!)
