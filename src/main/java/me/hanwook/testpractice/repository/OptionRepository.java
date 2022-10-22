@@ -13,4 +13,11 @@ public interface OptionRepository extends JpaRepository<Option, Long> {
      * @return
      */
     List<Option> findByNameContains(String name);
+
+    /**
+     * 해당 이름이 존재하는지 검색
+     * @param name
+     * @return
+     */
+    boolean existsByName(String name);
 }

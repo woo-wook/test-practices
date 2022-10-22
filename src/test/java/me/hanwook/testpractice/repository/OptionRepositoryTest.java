@@ -16,7 +16,7 @@ public class OptionRepositoryTest {
     OptionRepository optionRepository;
 
     @Test
-    void name() throws Exception {
+    void 옵션_검색() throws Exception {
         // given
         optionRepository.save(
                 Option.builder()
@@ -48,5 +48,26 @@ public class OptionRepositoryTest {
         // then
         assertThat(result.size()).isEqualTo(2);
         assertThat(result.stream().allMatch(x -> x.getName().contains(name))).isTrue();
+    }
+
+    @Test
+    void 동일한_이름의_옵션_존재하는지_확인() {
+        // given
+        final String name = "내비게이션";
+
+        optionRepository.save(
+                Option.builder()
+                        .name(name)
+                        .price(100000)
+                        .build()
+        );
+
+        // when
+        boolean navigation = optionRepository.existsByName(name);
+        boolean sunroof = optionRepository.existsByName("선루프");
+
+        // then
+        assertThat(navigation).isTrue();
+        assertThat(sunroof).isFalse();
     }
 }
