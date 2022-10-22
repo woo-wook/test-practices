@@ -60,4 +60,24 @@ class ManufacturerRepositoryTest {
         assertThat(manufacturers3).hasSize(3);
         assertThat(manufacturers4).hasSize(3);
     }
+
+    @Test
+    void 제조사명_중복_조회() {
+        // given
+        final String name = "현대";
+
+        manufacturerRepository.save(
+                Manufacturer.builder()
+                        .name(name)
+                        .build()
+        );
+
+        // when
+        boolean hyundai = manufacturerRepository.existsByName(name);
+        boolean kia = manufacturerRepository.existsByName("기아");
+
+        // then
+        assertThat(hyundai).isTrue();
+        assertThat(kia).isFalse();
+    }
 }

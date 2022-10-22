@@ -13,4 +13,11 @@ public interface ManufacturerRepository extends JpaRepository<Manufacturer, Long
      * @return 해당 제조사명이 포함되어 있는 제조사 목록
      */
     List<Manufacturer> findByNameContains(String name);
+
+    /**
+     * 제조사명 중복 검색
+     * @param name
+     * @return
+     */
+    boolean existsByName(String name);
 }
