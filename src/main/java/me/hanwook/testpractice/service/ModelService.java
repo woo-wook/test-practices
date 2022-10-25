@@ -3,13 +3,16 @@ package me.hanwook.testpractice.service;
 import lombok.RequiredArgsConstructor;
 import me.hanwook.testpractice.entity.Manufacturer;
 import me.hanwook.testpractice.entity.Model;
-import me.hanwook.testpractice.exception.ManufacturerNotFoundException;
-import me.hanwook.testpractice.exception.ModelDuplicateException;
-import me.hanwook.testpractice.exception.UnusablePriceException;
+import me.hanwook.testpractice.entity.ModelAllowOption;
+import me.hanwook.testpractice.exception.*;
 import me.hanwook.testpractice.repository.ManufacturerRepository;
 import me.hanwook.testpractice.repository.ModelRepository;
+import me.hanwook.testpractice.repository.OptionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class ModelService {
 
     private final ModelRepository modelRepository;
     private final ManufacturerRepository manufacturerRepository;
+    private final OptionRepository optionRepository;
 
     /**
      * 모델 생성
@@ -26,19 +30,34 @@ public class ModelService {
      * @return
      */
     @Transactional
-    public Model create(Long manufacturerId, String name, int price) {
+    public Model create(Long manufacturerId, String name, int price, List<Long> optionIds) {
         Manufacturer manufacturer = manufacturerRepository.findById(manufacturerId)
                 .orElseThrow(ManufacturerNotFoundException::new);
 
         validatePrice(price);
         validateModelName(name, manufacturer);
 
-        return modelRepository.save(
-            Model.builder()
-                    .manufacturer(manufacturer)
-                    .name(name)
-                    .price(price)
-                    .build()
+        Model model = modelRepository.save(
+                Model.builder()
+                        .manufacturer(manufacturer)
+                        .name(name)
+                        .price(price)
+                        .build()
+        );
+
+        if(!CollectionUtils.isEmpty(optionIds)) {
+            addOptions(model, optionIds);
+        }
+
+        return model;
+    }
+
+    private void addOptions(Model model, List<Long> optionIds) {
+        optionIds.forEach(optionId ->
+                ModelAllowOption.builder()
+                        .model(model)
+                        .option(optionRepository.findById(optionId).orElseThrow(OptionNotFoundException::new))
+                        .build()
         );
     }
 

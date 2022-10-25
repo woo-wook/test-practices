@@ -41,7 +41,7 @@ class ModelServiceTest {
         int price = 100000000;
 
         // when & then
-        assertThatThrownBy(() -> modelService.create(manufacturerId, name, price))
+        assertThatThrownBy(() -> modelService.create(manufacturerId, name, price, null))
                 .isInstanceOf(ManufacturerNotFoundException.class);
     }
 
@@ -61,10 +61,10 @@ class ModelServiceTest {
                 );
 
         // when & then
-        assertThatThrownBy(() -> modelService.create(manufacturerId, name, 9999999))
+        assertThatThrownBy(() -> modelService.create(manufacturerId, name, 9999999, null))
                 .isInstanceOf(UnusablePriceException.class);
 
-        assertThatThrownBy(() -> modelService.create(manufacturerId, name, 1000000001))
+        assertThatThrownBy(() -> modelService.create(manufacturerId, name, 1000000001, null))
                 .isInstanceOf(UnusablePriceException.class);
     }
     
@@ -88,7 +88,7 @@ class ModelServiceTest {
                 .thenReturn(true);
         
         // when & then
-        assertThatThrownBy(() -> modelService.create(manufacturerId, name, price))
+        assertThatThrownBy(() -> modelService.create(manufacturerId, name, price, null))
                 .isInstanceOf(ModelDuplicateException.class);
     }
     
@@ -115,7 +115,7 @@ class ModelServiceTest {
                 .then(AdditionalAnswers.returnsFirstArg());
         
         // when
-        Model model = modelService.create(manufacturerId, name, price);
+        Model model = modelService.create(manufacturerId, name, price, null);
 
         // then
         assertThat(model.getName()).isEqualTo(name);
