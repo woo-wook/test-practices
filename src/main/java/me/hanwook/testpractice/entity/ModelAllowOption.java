@@ -36,5 +36,7 @@ public class ModelAllowOption {
     public ModelAllowOption(Model model, Option option) {
         this.model = model;
         this.option = option;
+
+        this.model.getAllowOptions().add(this);
     }
 }
