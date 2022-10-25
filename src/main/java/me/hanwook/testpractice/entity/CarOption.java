@@ -32,5 +32,7 @@ public class CarOption {
     public CarOption(Car car, Option option) {
         this.car = car;
         this.option = option;
+
+        this.car.getOptions().add(this);
     }
 }
