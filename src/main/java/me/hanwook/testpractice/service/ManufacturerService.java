@@ -15,7 +15,7 @@ public class ManufacturerService {
 
     @Transactional
     public Manufacturer create(String name) {
-        validManufacturerName(name);
+        validateManufacturerName(name);
 
         return manufacturerRepository.save(
                 Manufacturer.builder()
@@ -24,7 +24,7 @@ public class ManufacturerService {
         );
     }
 
-    private void validManufacturerName(String name) {
+    private void validateManufacturerName(String name) {
         if(manufacturerRepository.existsByName(name)) {
             throw new ManufacturerDuplicateException();
         }
