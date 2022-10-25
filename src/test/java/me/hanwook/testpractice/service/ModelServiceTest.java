@@ -2,11 +2,13 @@ package me.hanwook.testpractice.service;
 
 import me.hanwook.testpractice.entity.Manufacturer;
 import me.hanwook.testpractice.entity.Model;
+import me.hanwook.testpractice.entity.Option;
 import me.hanwook.testpractice.exception.ManufacturerNotFoundException;
 import me.hanwook.testpractice.exception.ModelDuplicateException;
 import me.hanwook.testpractice.exception.UnusablePriceException;
 import me.hanwook.testpractice.repository.ManufacturerRepository;
 import me.hanwook.testpractice.repository.ModelRepository;
+import me.hanwook.testpractice.repository.OptionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
@@ -14,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,6 +32,9 @@ class ModelServiceTest {
 
     @Mock
     ModelRepository modelRepository;
+
+    @Mock
+    OptionRepository optionRepository;
 
     @InjectMocks
     ModelService modelService;
@@ -98,6 +104,7 @@ class ModelServiceTest {
         Long manufacturerId = 1L;
         String name = "SONATA";
         int price = 200000000;
+        List<Long> optionIds = List.of(1L, 2L);
 
         when(manufacturerRepository.findById(manufacturerId))
                 .thenReturn(
@@ -113,13 +120,24 @@ class ModelServiceTest {
 
         when(modelRepository.save(any(Model.class)))
                 .then(AdditionalAnswers.returnsFirstArg());
-        
+
+        optionIds.forEach(optionId ->
+                when(optionRepository.findById(optionId))
+                        .thenReturn(Optional.of(
+                                Option.builder()
+                                        .name("옵션 " + optionId)
+                                        .price(1000000)
+                                        .build()
+                        ))
+        );
+
         // when
-        Model model = modelService.create(manufacturerId, name, price, null);
+        Model model = modelService.create(manufacturerId, name, price, optionIds);
 
         // then
         assertThat(model.getName()).isEqualTo(name);
         assertThat(model.getPrice()).isEqualTo(price);
+        assertThat(model.getAllowOptions()).hasSize(2);
     }
 
 }
