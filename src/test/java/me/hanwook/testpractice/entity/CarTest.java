@@ -85,11 +85,9 @@ public class CarTest {
     }
 
     private void addCarOption(Car car, Option option) {
-        CarOption carOption = CarOption.builder()
+        CarOption.builder()
                 .car(car)
                 .option(option)
                 .build();
-
-        car.getOptions().add(carOption);
     }
 }
