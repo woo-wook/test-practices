@@ -38,6 +38,10 @@ public class Reservation {
     @JoinColumn(name = "car_id", foreignKey = @ForeignKey(name = "fk_reservation_02"))
     private Car car;
 
+    @Column(length = 10)
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
+
     /**
      * 고객명
      */
@@ -79,5 +83,7 @@ public class Reservation {
         this.carPrice = carPrice;
         this.optionPrice = optionPrice;
         this.incentive = incentive;
+
+        this.status = ReservationStatus.WAIT;
     }
 }
