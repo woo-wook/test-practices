@@ -5,6 +5,7 @@ import me.hanwook.testpractice.entity.Model;
 import me.hanwook.testpractice.entity.Reservation;
 import me.hanwook.testpractice.entity.ReservationStatus;
 import me.hanwook.testpractice.exception.ModelNotFoundException;
+import me.hanwook.testpractice.exception.ReservationNotFoundException;
 import me.hanwook.testpractice.repository.ModelRepository;
 import me.hanwook.testpractice.repository.ReservationRepository;
 import org.assertj.core.api.Assertions;
@@ -32,6 +33,9 @@ class ReservationServiceTest {
 
     @Mock
     ReservationRepository reservationRepository;
+
+    @Mock
+    CarService carService;
 
     @InjectMocks
     ReservationService reservationService;
@@ -106,5 +110,15 @@ class ReservationServiceTest {
 
         // then
         assertThat(result.getStatus()).isEqualTo(ReservationStatus.CANCEL);
+    }
+    
+    @Test
+    void 예약_취소_예약없음_예외() {
+        // given
+        Long reservationId = 1L;
+        
+        // when & then
+        assertThatThrownBy(() -> reservationService.cancel(reservationId))
+                .isInstanceOf(ReservationNotFoundException.class);
     }
 }
