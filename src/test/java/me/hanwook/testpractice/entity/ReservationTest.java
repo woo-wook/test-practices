@@ -34,4 +34,22 @@ class ReservationTest {
         // then
         assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.CANCEL);
     }
+
+    @Test
+    void 차량_출고() {
+        // given
+        Reservation reservation = Reservation.builder()
+                .build();
+
+        Car car = Car.builder()
+                .color(CarColor.BLACK)
+                .build();
+
+        // when
+        reservation.delivery(car);
+
+        // then
+        assertThat(reservation.getCar()).isEqualTo(car);
+        assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.DELIVERY);
+    }
 }

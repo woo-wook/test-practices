@@ -90,4 +90,9 @@ public class Reservation {
     public void cancel() {
         this.status = ReservationStatus.CANCEL;
     }
+
+    public void delivery(Car car) {
+        this.car = car;
+        this.status = ReservationStatus.DELIVERY;
+    }
 }
