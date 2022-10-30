@@ -3,6 +3,7 @@ package me.hanwook.testpractice.service;
 import me.hanwook.testpractice.entity.CarColor;
 import me.hanwook.testpractice.entity.Model;
 import me.hanwook.testpractice.entity.Reservation;
+import me.hanwook.testpractice.entity.ReservationStatus;
 import me.hanwook.testpractice.exception.ModelNotFoundException;
 import me.hanwook.testpractice.repository.ModelRepository;
 import me.hanwook.testpractice.repository.ReservationRepository;
@@ -82,5 +83,28 @@ class ReservationServiceTest {
         // when & then
         assertThatThrownBy(() -> reservationService.reservation(modelId, color, customerName, carPrice, optionPrice, incentive))
                 .isInstanceOf(ModelNotFoundException.class);
+    }
+
+    @Test
+    void 예약_취소() {
+        // given
+        Long reservationId = 1L;
+
+        when(reservationRepository.findById(reservationId))
+                .thenReturn(
+                        Optional.ofNullable(
+                                Reservation.builder()
+                                        .incentive(10000)
+                                        .optionPrice(10000)
+                                        .carPrice(10000)
+                                        .build()
+                        )
+                );
+
+        // when
+        Reservation result = reservationService.cancel(reservationId);
+
+        // then
+        assertThat(result.getStatus()).isEqualTo(ReservationStatus.CANCEL);
     }
 }

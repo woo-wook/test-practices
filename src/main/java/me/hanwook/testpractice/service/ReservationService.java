@@ -5,6 +5,7 @@ import me.hanwook.testpractice.entity.CarColor;
 import me.hanwook.testpractice.entity.Model;
 import me.hanwook.testpractice.entity.Reservation;
 import me.hanwook.testpractice.exception.ModelNotFoundException;
+import me.hanwook.testpractice.exception.ReservationNotFoundException;
 import me.hanwook.testpractice.repository.ModelRepository;
 import me.hanwook.testpractice.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,15 @@ public class ReservationService {
                         .incentive(incentive)
                         .build()
         );
+    }
+
+    @Transactional
+    public Reservation cancel(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(ReservationNotFoundException::new);
+
+        reservation.cancel();
+
+        return reservation;
     }
 }
