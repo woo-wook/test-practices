@@ -1,9 +1,6 @@
 package me.hanwook.testpractice.service;
 
-import me.hanwook.testpractice.entity.CarColor;
-import me.hanwook.testpractice.entity.Model;
-import me.hanwook.testpractice.entity.Reservation;
-import me.hanwook.testpractice.entity.ReservationStatus;
+import me.hanwook.testpractice.entity.*;
 import me.hanwook.testpractice.exception.ModelNotFoundException;
 import me.hanwook.testpractice.exception.ReservationNotFoundException;
 import me.hanwook.testpractice.repository.ModelRepository;
@@ -17,12 +14,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -120,5 +119,40 @@ class ReservationServiceTest {
         // when & then
         assertThatThrownBy(() -> reservationService.cancel(reservationId))
                 .isInstanceOf(ReservationNotFoundException.class);
+    }
+
+    @Test
+    void 예약_출고() {
+        // given
+        Long reservationId = 1L;
+
+        Model model = Model.builder()
+                .price(1000000)
+                .name("SONATA")
+                .build();
+
+        Reservation reservation = Reservation.builder()
+                .model(model)
+                .color(CarColor.BLACK)
+                .build();
+
+        when(reservationRepository.findById(reservationId))
+                .thenReturn(Optional.ofNullable(reservation));
+
+        when(carService.create(eq(null), any(CarColor.class), any(List.class)))
+                .thenReturn(
+                        Car.builder()
+                                .model(model)
+                                .color(reservation.getColor())
+                                .build()
+                );
+
+        // when
+        Reservation result = reservationService.delivery(reservationId);
+        Car car = result.getCar();
+
+        // then
+        assertThat(result.getStatus()).isEqualTo(ReservationStatus.DELIVERY);
+        assertThat(car.getColor()).isEqualTo(reservation.getColor());
     }
 }
