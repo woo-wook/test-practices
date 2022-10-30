@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReservationTest {
 
     @Test
-    void 예약_총액_조회_테스트() {
+    void 예약_총액_조회() {
         // given
         Reservation reservation = Reservation.builder()
                 .carPrice(1000000)
@@ -20,5 +20,18 @@ class ReservationTest {
 
         // then
         assertThat(result).isEqualTo(231000000);
+    }
+
+    @Test
+    void 예약_취소() {
+        // given
+        Reservation reservation = Reservation.builder()
+                .build();
+
+        // when
+        reservation.cancel();
+
+        // then
+        assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.CANCEL);
     }
 }

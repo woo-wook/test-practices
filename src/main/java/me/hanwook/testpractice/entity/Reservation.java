@@ -86,4 +86,8 @@ public class Reservation {
 
         this.status = ReservationStatus.WAIT;
     }
+
+    public void cancel() {
+        this.status = ReservationStatus.CANCEL;
+    }
 }
