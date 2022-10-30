@@ -155,4 +155,14 @@ class ReservationServiceTest {
         assertThat(result.getStatus()).isEqualTo(ReservationStatus.DELIVERY);
         assertThat(car.getColor()).isEqualTo(reservation.getColor());
     }
+    
+    @Test
+    void 예약_출고_예약없음_예외() {
+        // given
+        Long reservationId = 1L;
+
+        // when & then
+        assertThatThrownBy(() -> reservationService.delivery(reservationId))
+                .isInstanceOf(ReservationNotFoundException.class);
+    }
 }
