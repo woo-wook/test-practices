@@ -1,5 +1,7 @@
 # test-practice
 
+#### 테스트에 대한 심도 깊은 연구가 아니라 단순히 작성을 반복하면서 연습을 하기 위한 레파지토리입니다.
+
 **Note**. 아래 순서에 따라서 테스트를 작성하며 연습해보자.
 
 > Entity -> Repository -> Service -> Controller
